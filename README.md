@@ -1,2 +1,3 @@
 # GraphQL-database
-Small practice on GraphQL / Apollo / NeDB (database)
+
+Small practice on GraphQL / Apollo / NeDB (database) / NodeJs
