@@ -14,6 +14,7 @@ const typeDefs = gql`
   # Comments in GraphQL are defined with the hash (#) symbol.
 
   type User {
+    _id: String
     name: String
     age: Int
   }
@@ -36,6 +37,7 @@ const typeDefs = gql`
     AddProduct(name: String!, price: Float!, description: String!): [Product]
     RemoveUser(name: String!, age: Int!): [User]
     RemoveProduct(name: String!, price: Float!, description: String!): [Product]
+    EditUser(_id: String!, name: String, age: Int): [User]
   }
 `;
 
@@ -74,7 +76,6 @@ const addProduct = product =>
   });
 
 // Remove & then update list
-
 const removeUser = user =>
   new Promise(resolve => {
     db.users.remove(user, () => {
@@ -93,6 +94,22 @@ const removeProduct = product =>
     });
   });
 
+// Edit & update list '
+
+const editUser = user =>
+  new Promise(resolve => {
+    db.users.update(
+      { _id: user._id },
+      { name: user.name, age: user.age },
+      {},
+      () => {
+        db.users.find({}, (err, docs) => {
+          resolve(docs);
+        });
+      }
+    );
+  });
+
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
@@ -104,7 +121,8 @@ const resolvers = {
     AddUser: (_, user) => addUser(user),
     AddProduct: (_, product) => addProduct(product),
     RemoveUser: (_, user) => removeUser(user),
-    RemoveProduct: (_, product) => removeProduct(product)
+    RemoveProduct: (_, product) => removeProduct(product),
+    EditUser: (_, user) => editUser(user)
   }
 };
 

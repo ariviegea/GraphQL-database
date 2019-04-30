@@ -1,7 +1,4 @@
-{"name":"Chair","price":100,"description":"Blue wonderful color chair","_id":"33uIZZ8VREeBoTp7"}
 {"name":"Soffa","price":135,"description":"This is a Soffa","_id":"8PrFOKNr1BJJ8g5G"}
 {"name":"Chair","price":100,"description":"Blue wonderful color chair","_id":"DLKppxlnGb76g3HV"}
-{"name":"Mirror","price":550,"description":"This is a Couch","_id":"UWyos8rlgKUJzg0o"}
 {"name":"Table","price":13,"description":"This is a table","_id":"kt0DochVdvZ0XdhZ"}
-{"$$deleted":true,"_id":"UWyos8rlgKUJzg0o"}
-{"$$deleted":true,"_id":"33uIZZ8VREeBoTp7"}
+{"name":"Dinning Table","price":550,"description":"This is a Couch","_id":"wRE7DPNmIJKvYTxC"}
