@@ -36,19 +36,14 @@ const typeDefs = gql`
   type Mutation {
     AddUser(name: String!, age: Int!): [User]
     AddProduct(name: String!, price: Float!, description: String!): [Product]
-    RemoveUser(_id: String!, name: String, age: Int): [User]
-    RemoveProduct(
-      _id: String!
-      name: String
-      price: Float
-      description: String
-    ): [Product]
-    EditUser(_id: String!, name: String, age: Int): [User]
+    RemoveUser(_id: String!): [User]
+    RemoveProduct(_id: String!): [Product]
+    EditUser(_id: String!, name: String!, age: Int!): [User]
     EditProduct(
       _id: String!
-      name: String
-      price: Float
-      description: String
+      name: String!
+      price: Float!
+      description: String!
     ): [Product]
   }
 `;
@@ -110,16 +105,11 @@ const removeProduct = product =>
 
 const editUser = user =>
   new Promise(resolve => {
-    db.users.update(
-      { _id: user._id },
-      { name: user.name, age: user.age },
-      {},
-      () => {
-        db.users.find({}, (err, docs) => {
-          resolve(docs);
-        });
-      }
-    );
+    db.users.update({ _id: user._id }, user, {}, () => {
+      db.users.find({}, (err, docs) => {
+        resolve(docs);
+      });
+    });
   });
 
 const editProduct = product =>
