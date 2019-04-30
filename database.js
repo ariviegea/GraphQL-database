@@ -9,8 +9,6 @@ db.products = new Datastore("products.db");
 db.users.loadDatabase();
 db.products.loadDatabase();
 
-console.log(
-
 /*
 const user = {
   name: "Conny",
