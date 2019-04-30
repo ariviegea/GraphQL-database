@@ -35,6 +35,7 @@ const typeDefs = gql`
     AddUser(name: String!, age: Int!): [User]
     AddProduct(name: String!, price: Float!, description: String!): [Product]
     RemoveUser(name: String!, age: Int!): [User]
+    RemoveProduct(name: String!, price: Float!, description: String!): [Product]
   }
 `;
 
@@ -83,6 +84,15 @@ const removeUser = user =>
     });
   });
 
+const removeProduct = product =>
+  new Promise(resolve => {
+    db.products.remove(product, () => {
+      db.products.find({}, (err, docs) => {
+        resolve(docs);
+      });
+    });
+  });
+
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
@@ -93,7 +103,8 @@ const resolvers = {
   Mutation: {
     AddUser: (_, user) => addUser(user),
     AddProduct: (_, product) => addProduct(product),
-    RemoveUser: (_, user) => removeUser(user)
+    RemoveUser: (_, user) => removeUser(user),
+    RemoveProduct: (_, product) => removeProduct(product)
   }
 };
 
