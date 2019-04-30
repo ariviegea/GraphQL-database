@@ -37,7 +37,12 @@ const typeDefs = gql`
     AddUser(name: String!, age: Int!): [User]
     AddProduct(name: String!, price: Float!, description: String!): [Product]
     RemoveUser(_id: String!, name: String, age: Int): [User]
-    RemoveProduct(name: String!, price: Float!, description: String!): [Product]
+    RemoveProduct(
+      _id: String!
+      name: String
+      price: Float
+      description: String
+    ): [Product]
     EditUser(_id: String!, name: String, age: Int): [User]
   }
 `;
@@ -88,7 +93,7 @@ const removeUser = user =>
 
 const removeProduct = product =>
   new Promise(resolve => {
-    db.products.remove(product, () => {
+    db.products.remove({ _id: product._id }, {}, () => {
       db.products.find({}, (err, docs) => {
         resolve(docs);
       });
