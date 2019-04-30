@@ -33,8 +33,10 @@ const typeDefs = gql`
 
   type Mutation {
     AddUser(name: String!, age: Int!): [User]
+    AddProduct(name: String!, price: Float!, description: String!): [Product]
   }
 `;
+
 // Link database with query
 const getUsers = () =>
   new Promise(resolve => {
@@ -60,6 +62,15 @@ const addUser = user =>
     });
   });
 
+const addProduct = product =>
+  new Promise(resolve => {
+    db.products.insert(product, () => {
+      db.products.find({}, (err, docs) => {
+        resolve(docs);
+      });
+    });
+  });
+
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
@@ -68,7 +79,8 @@ const resolvers = {
     Products: () => getProducts()
   },
   Mutation: {
-    AddUser: (_, user) => addUser(user)
+    AddUser: (_, user) => addUser(user),
+    AddProduct: (_, product) => addProduct(product)
   }
 };
 
