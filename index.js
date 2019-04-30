@@ -26,7 +26,7 @@ const typeDefs = gql`
     description: String
   }
 
-  # The "Query" type is the root of all GraphQL queries.
+  # The "Query" type is the root of all GraphQL queries. Property names into the array.
   # (A "Mutation" type will be covered later on.)
   type Query {
     Users: [User]
@@ -44,6 +44,12 @@ const typeDefs = gql`
       description: String
     ): [Product]
     EditUser(_id: String!, name: String, age: Int): [User]
+    EditProduct(
+      _id: String!
+      name: String
+      price: Float
+      description: String
+    ): [Product]
   }
 `;
 
@@ -116,6 +122,24 @@ const editUser = user =>
     );
   });
 
+const editProduct = product =>
+  new Promise(resolve => {
+    db.products.update(
+      { _id: product._id },
+      {
+        name: product.name,
+        price: product.price,
+        description: product.description
+      },
+      {},
+      () => {
+        db.products.find({}, (err, docs) => {
+          resolve(docs);
+        });
+      }
+    );
+  });
+
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
@@ -128,7 +152,8 @@ const resolvers = {
     AddProduct: (_, product) => addProduct(product),
     RemoveUser: (_, user) => removeUser(user),
     RemoveProduct: (_, product) => removeProduct(product),
-    EditUser: (_, user) => editUser(user)
+    EditUser: (_, user) => editUser(user),
+    EditProduct: (_, product) => editProduct(product)
   }
 };
 
